@@ -1,13 +1,11 @@
 from pathlib import Path
 
-import numpy as np
 import streamlit as st
 import yaml
 from tqdm import tqdm
 
-from animalviz.eval_interface import ClassificationOutput, EvalInterface
+from animalviz.eval_interface import ClassificationOutput
 from animalviz.model_loading import load_from_directory
-
 
 path_to_model = st.sidebar.text_input('Path to model', value="./models/")
 path_to_model = Path(path_to_model)

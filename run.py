@@ -1,6 +1,7 @@
 import argparse
 import csv
 from pathlib import Path
+
 from tqdm import tqdm
 
 from animalviz.model_loading import load_from_directory
