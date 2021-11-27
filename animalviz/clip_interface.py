@@ -7,6 +7,7 @@ import numpy as np
 import torch
 import torchvision
 from PIL import Image
+from torchvision.transforms import transforms
 
 
 @dataclasses.dataclass
@@ -19,10 +20,12 @@ class ClipOutput:
 class ClipInterface:
     def __init__(
             self,
-            model_name: str = "ViT-B/32",
-            device: str = 'cpu'
+            model_name: str = "RN101",
+            device: str = 'cpu',
+            num_trials: int = 10,
     ):
         self.device = device
+        self.num_trials = num_trials
         self.model, self.transform = self._load_model(model_name)
         self.model.to(self.device)
 
@@ -56,19 +59,26 @@ class ClipInterface:
             return text_tensor.detach().cpu().numpy()
 
     def classify_image(self, image_path: Path, text: str) -> ClipOutput:
-        image_embedding = self.get_visual_embedding(image_path)
-        text_embedding = self.get_textual_embedding(text)
-        probability = (text_embedding @ image_embedding.T).flatten()[0]
-        return ClipOutput(
-            image_embedding=image_embedding,
-            text_embedding=text_embedding,
-            probability=probability
-        )
+        outputs = []
+        for _ in range(self.num_trials):
+            image_embedding = self.get_visual_embedding(image_path)
+            text_embedding = self.get_textual_embedding(text)
+            probability = (text_embedding @ image_embedding.T).flatten()[0]
+            outputs.append(
+                ClipOutput(
+                    image_embedding=image_embedding,
+                    text_embedding=text_embedding,
+                    probability=probability
+                )
+            )
+        return max(outputs, key=lambda x: x.probability)
 
     @staticmethod
     def _load_model(
             model_name: str
     ) -> tp.Tuple[torch.nn.Module, torchvision.transforms.Compose]:
         model, preprocess = clip.load(model_name)
+        preprocess.transforms = [transforms.Resize(512)] + preprocess.transforms
+        preprocess.transforms[1] = transforms.RandomCrop(model.visual.input_resolution)
         model.eval()
         return model, preprocess

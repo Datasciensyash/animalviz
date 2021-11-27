@@ -2,9 +2,8 @@ from pathlib import Path
 
 import streamlit as st
 import yaml
-from tqdm import tqdm
-
 from deep_translator import GoogleTranslator
+from tqdm import tqdm
 
 from animalviz.clip_interface import ClipInterface
 from animalviz.eval_interface import ClassificationOutput
@@ -57,7 +56,8 @@ if task == "Classification":
         st.image(str(file))
 
 elif task == "Ranking":
-    clip_interface = ClipInterface(device=device)
+    num_trials = st.sidebar.number_input("Number of trials", value=10, min_value=1, max_value=40, step=5)
+    clip_interface = ClipInterface(device=device, num_trials=num_trials)
     top_n = st.sidebar.number_input("Number of images to show", min_value=1, max_value=10, value=5)
 
     russian_input = st.sidebar.text_input("What to find on images?", value="Лиса")
