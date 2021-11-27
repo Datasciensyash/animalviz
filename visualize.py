@@ -19,7 +19,7 @@ device = st.sidebar.text_input('Device', value='cpu')
 task = st.sidebar.selectbox("Choose task", ["Classification", "Ranking"])
 
 if task == "Classification":
-    path_to_model = st.sidebar.text_input('Path to model', value="./models/")
+    path_to_model = st.sidebar.text_input('Path to model', value="./model/")
     path_to_model = Path(path_to_model)
 
     eval_interface = load_from_directory(path_to_model, device)
