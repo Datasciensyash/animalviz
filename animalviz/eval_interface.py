@@ -80,5 +80,6 @@ class EvalInterface:
 
     def _load_model(self, model_name: str) -> torch.nn.Module:
         model = getattr(models, model_name)(pretrained=True).to(self.device)
+        model.eval()
         return torch.nn.Sequential(*list(model.children())[:-1])
 

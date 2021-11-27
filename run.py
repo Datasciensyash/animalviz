@@ -23,7 +23,7 @@ def parse_args():
         default='./model/'
     )
     arguments_parser.add_argument(
-        "-d", "--device", help="Path to directory with models.", type=Path, required=False,
+        "-d", "--device", help="Path to directory with models.", type=str, required=False,
         default='cpu'
     )
     args, unknown = arguments_parser.parse_known_args()
@@ -36,8 +36,9 @@ def main(models_path: Path, data_path: Path, out_path: Path, device: str):
     eval_interface = load_from_directory(models_path, device)
 
     # Prepare .csv file writer
-    csvfile = out_path.open('w')
+    csvfile = out_path.open('w', newline='')
     writer = csv.writer(csvfile)
+    writer.writerow(['id', 'class'])
 
     # Define label_to_cls
     output_format = {'tiger': 1, 'leopard': 2, 'other': 3}
@@ -45,6 +46,7 @@ def main(models_path: Path, data_path: Path, out_path: Path, device: str):
     # Inference
     for filename in tqdm(data_path.glob('*.jpg'), desc='Model inference...'):
         prediction = eval_interface.classify_image(filename)
+        print(prediction)
         label = output_format[prediction.label_name]
         writer.writerow([filename.name, label])
     csvfile.close()
