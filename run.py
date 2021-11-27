@@ -23,7 +23,7 @@ def parse_args():
         default='./model/'
     )
     arguments_parser.add_argument(
-        "-d", "--device", help="Path to directory with models.", type=str, required=False,
+        "-d", "--device", help="Computing device, e.g. cuda:0 or cpu", type=str, required=False,
         default='cpu'
     )
     args, unknown = arguments_parser.parse_known_args()
