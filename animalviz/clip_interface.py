@@ -19,7 +19,7 @@ class ClipOutput:
 class ClipInterface:
     def __init__(
             self,
-            model_name: str = "RN50",
+            model_name: str = "ViT-B/32",
             device: str = 'cpu'
     ):
         self.device = device
@@ -58,7 +58,7 @@ class ClipInterface:
     def classify_image(self, image_path: Path, text: str) -> ClipOutput:
         image_embedding = self.get_visual_embedding(image_path)
         text_embedding = self.get_textual_embedding(text)
-        probability = text_embedding @ image_embedding.T
+        probability = (text_embedding @ image_embedding.T).flatten()[0]
         return ClipOutput(
             image_embedding=image_embedding,
             text_embedding=text_embedding,
