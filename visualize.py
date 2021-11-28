@@ -30,7 +30,7 @@ if task == "Classification":
 
         meta_fname = filename.with_suffix('.yml')
         if not meta_fname.exists():
-            cls_out = eval_interface.classify_image(file)
+            cls_out = eval_interface.classify_image(filename)
             with meta_fname.open('w') as file:
                 yaml.dump({
                     'label': cls_out.label,

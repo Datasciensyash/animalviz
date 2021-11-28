@@ -4,8 +4,14 @@ Tool for classification of different animals on photos.
 ## Installation
 
 ```
+# Clone repo
 git clone https://github.com/Datasciensyash/animalviz.git && cd animalviz
+
+# Install requirements
 pip install -r requirements.txt
+
+# Install additional requirements
+pip install git+https://github.com/openai/CLIP.git
 ```
 
 ## Run classification
@@ -36,3 +42,6 @@ python run.py -p ./images/ -d cuda:0
 ```
 streamlit run visualize.py
 ```
+
+## Predictions for hack
+File `labels.csv` stored in `./outputs/labels.csv`

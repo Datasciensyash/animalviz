@@ -4,5 +4,4 @@ opencv-python==4.5.4.60
 tqdm==4.62.3
 lightgbm==3.3.1
 streamlit==1.2.0
-deep_translator==1.5.5
-git+https://github.com/openai/CLIP.git
+deep_translator<=1.5.5
