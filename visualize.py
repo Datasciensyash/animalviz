@@ -60,7 +60,7 @@ elif task == "Ranking":
     clip_interface = ClipInterface(device=device, num_trials=num_trials)
     top_n = st.sidebar.number_input("Number of images to show", min_value=1, max_value=10, value=5)
 
-    russian_input = st.sidebar.text_input("What to find on images?", value="Лиса")
+    russian_input = st.sidebar.text_input("What to find on images?", value="Brown bear")
     english_input = translator.translate(russian_input)
 
     predictions = []
